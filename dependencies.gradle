@@ -1,0 +1,45 @@
+ext.versions = [
+        // accompanist
+        accompanistVersion      : '0.21.3-beta',
+
+        // splash screen
+        splashScreenVersion     : '1.0.0-alpha01',
+
+        //icons
+        fontAwesomeVersion      : '1.0.0',
+
+        // navigation
+        navigationVersion       : '2.3.5',
+
+        // lifecycle
+        lifecycleVersion        : '2.4.0',
+
+        // room
+        roomVersion             : '2.3.0',
+
+        // compose
+        composeVersion          : '1.1.0-beta03',
+        activityVersion         : '1.4.0',
+
+        // coil
+        coilVersion             : '1.3.2',
+
+        // coroutines
+        coroutineVersion        : '1.5.2',
+
+        // hilt
+        hiltCoreVersion         : '2.38.1',
+        hiltNavigation          : '1.0.0',
+
+        // material
+        materialVersion         : '1.4.0',
+
+        // retrofit
+        retrofitVersion         : '2.9.0',
+
+        // unit test
+        junitVersion            : '4.13.2',
+        androidxTestJunitVersion: '1.1.3',
+        espressoVersion         : '3.4.0',
+        roboelectricVersion     : '4.6'
+]
