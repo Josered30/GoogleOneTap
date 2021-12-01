@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
@@ -61,7 +62,11 @@ class HomeFragment : Fragment() {
         homeViewModel.credentialsResult.observe(viewLifecycleOwner, Observer {
             val state = it ?: return@Observer
             when (state.valid) {
-                true -> showBiometricPromptForEncryption()
+                true -> {
+                    showBiometricPromptForEncryption()
+                    binding.emailBiometricInput.editText?.setText("")
+                    binding.passwordBiometricInput.editText?.setText("")
+                }
                 false -> {
                     binding.emailBiometricInput.error = it.emailError
                     binding.passwordBiometricInput.error = it.passwordError
@@ -113,17 +118,23 @@ class HomeFragment : Fragment() {
 
     private fun encryptAndStoreServerToken(authResult: BiometricPrompt.AuthenticationResult) {
         authResult.cryptoObject?.cipher?.apply {
-            val user = authManager.currentValue
-            user.token.let { token ->
-                Log.d("AUTH", "The token from server is $token")
-                val encryptedServerTokenWrapper = cryptographyManager.encryptData(token, this)
-                cryptographyManager.persistCiphertextWrapperToSharedPrefs(
-                    encryptedServerTokenWrapper,
-                    requireContext(),
-                    SHARED_PREFS_FILENAME,
-                    Context.MODE_PRIVATE,
-                    CIPHERTEXT_WRAPPER
-                )
+
+            if (authManager.checkToken()) {
+                val token = authManager.getToken()
+                token.let { token ->
+                    Log.d("AUTH", "The token from server is $token")
+                    val encryptedServerTokenWrapper = cryptographyManager.encryptData(token, this)
+                    cryptographyManager.persistCiphertextWrapperToSharedPrefs(
+                        encryptedServerTokenWrapper,
+                        requireContext(),
+                        SHARED_PREFS_FILENAME,
+                        Context.MODE_PRIVATE,
+                        CIPHERTEXT_WRAPPER
+                    )
+                    val duration = Toast.LENGTH_SHORT
+                    val toast = Toast.makeText(requireContext(), "Authentication enable", duration)
+                    toast.show()
+                }
             }
         }
     }

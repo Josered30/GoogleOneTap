@@ -65,7 +65,6 @@ class LoginViewModel @Inject constructor(private val authManager: AuthManager) :
     }
 
     fun loginOldToken(token: String) {
-        authManager.setToken(token)
         val user = User(token, AuthState.AUTH)
         authManager.setToken(token)
         authManager.changeState(user)
